@@ -4,7 +4,11 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
+<<<<<<< HEAD
         <title>Laravel</title>
+=======
+        <title>Anggi</title>
+>>>>>>> 2f21cad14c00239446385e791f6d1ce6fc800ce8
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
