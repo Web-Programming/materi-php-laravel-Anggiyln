@@ -9,10 +9,17 @@ class ProdiController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+
     public function index()
     {
         return view('prodi.index');
 
+    }
+
+    public function create()
+    {
+         return view ("prodi.create");
     }
 
     /**
