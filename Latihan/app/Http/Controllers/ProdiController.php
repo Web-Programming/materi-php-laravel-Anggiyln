@@ -27,15 +27,38 @@ class ProdiController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+
     }
+
 
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
-        //
+         // Data hardcoded sesuai dengan index
+         $prodiData = [
+            '1401' => ['name' => 'Sistem Informasi', 'ukt' => 'RP.8.000.000'],
+            '1402' => ['name' => 'Informatika', 'ukt' => 'RP.8.000.000'],
+            '1301' => ['name' => 'Manajemen', 'ukt' => 'RP.8.000.000'],
+            '1302' => ['name' => 'Akuntansi', 'ukt' => 'RP.8.000.000'],
+            '1403' => ['name' => 'Teknik Elektro', 'ukt' => 'RP.5.000.000'],
+        ];
+
+        $prodi = [
+            'id' => $id,
+            'name' => $prodiData[$id]['name'] ?? 'Tidak Ditemukan',
+            'ukt' => $prodiData[$id]['ukt'] ?? '-'
+        ];
+
+        return view('prodi.detail', compact('prodi'));
+    }
+
+    // Menampilkan form delete
+    public function delete($id)
+    {
+
     }
 
     /**
@@ -49,8 +72,10 @@ class ProdiController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+         // Ini hanya simulasi, tidak benar-benar menghapus data
+         return redirect()->route('prodi.index')
+         ->with('success', 'Program studi berhasil dihapus (simulasi)');
     }
 }

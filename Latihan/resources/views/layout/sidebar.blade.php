@@ -35,6 +35,12 @@
               <i class="nav-icon bi bi-circle"></i>
               <p>Dosen</p>
             </a>
+        </li>
+        <li class="nav-item">
+          <a href="{{ route('fakultas.index') }}" class="nav-link {{ request()->is('fakultas*') ? 'active' : '' }}">
+            <i class="nav-icon bi bi-circle"></i>
+            <p>Fakultas</p>
+          </a>
       </ul>
     </li>
   </ul>

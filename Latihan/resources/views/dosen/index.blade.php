@@ -115,7 +115,7 @@
             <!--end::Small Box Widget 2-->
           </div>
           <!--end::Col-->
-          <div class="col-lg-5 col-6">
+          <div class="col-lg-6 col-6">
             <!--begin::Small Box Widget 4-->
             <div class="small-box text-bg-danger">
               <div class="inner">

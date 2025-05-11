@@ -1,3 +1,37 @@
-<div>
-    <!-- Happiness is not something readymade. It comes from your own actions. - Dalai Lama -->
-</div>
+@extends('layout.master')
+
+@section('title', 'Universitas MDP')
+
+@section('content')
+<main class="app-main" style="background-color: #f73333;">
+    <div class="container">
+        <h1 class="mb-4 mt-3 text-white">Fakultas Universitas Multi Data Palembang</h1>
+
+        @foreach($fakultas as $fak)
+        <div class="small-box text-bg-secondary" style="box-shadow: none">
+            <div class="inner">
+        <div class="row mb-5 fade-in">
+            <div class="col-md-6">
+                <img src="{{ asset('img/' . $fak['gambar']) }}" class="img-fluid rounded" alt="{{ $fak['nama'] }}">
+            </div>
+            <div class="col-md-6 mt-3">
+                <h2 class="text-white"><b>{{ $fak['nama'] }}</b></h2>
+                <p class="text-dark">{{ $fak['deskripsi'] }}</p>
+
+                <!-- Tombol Detail -->
+                <a href="{{ route('fakultas.detail', $fak['id']) }}" class="btn btn-primary">Detail</a>
+
+                <!-- Tombol Hapus -->
+                <form action="{{ route('fakultas.destroy', $fak['id']) }}" method="POST" style="display: inline;">
+                    @csrf
+                    @method('POST')
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin ingin menghapus fakultas ini?')">Hapus</button>
+                </form>
+            </div>
+        </div>
+        @endforeach
+
+        <a href="{{ route('fakultas.create') }}" class="btn btn-success mb-5">Tambah Fakultas</a>
+    </div>
+</main>
+@endsection
