@@ -1,89 +1,31 @@
 @extends('layout.master')
 
+@section('title', 'Tambah Prodi')
+
 @section('content')
-<!DOCTYPE html>
-<html lang="en">
+<main class="app-main" style="background-color: #f4f4f4;">
+    <div class="container">
+        <h1 class="mb-4 mt-3 text-danger">Tambah Prodi Baru</h1>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Create - CRUD Laravel 12</title>
-    <script src=""></script>
-</head>
-
-<body>
-
-    <div class="container mx-auto mt-10 mb-10 px-10">
-        <div class="grid grid-cols-8 gap-4 p-5">
-            <div class="col-span-4 mt-2">
-                <h1 class="text-3xl font-bold">
-                    Daftar Program Studi Universitas MDP
-                </h1>
+        <form action="{{ url('/Prodi') }}">
+            <div class="mb-3">
+                <label for="nama" class="form-label">Nama Prodi</label>
+                <input type="text" class="form-control" id="nama" placeholder="Masukkan nama Prodi">
             </div>
-            <div class="col-span-4">
+
+            <div class="mb-3">
+                <label for="deskripsi" class="form-label">Deskripsi</label>
+                <textarea class="form-control" id="deskripsi" rows="4" placeholder="Masukkan deskripsi Prodi"></textarea>
             </div>
-        </div>
 
-        <div class="bg-white p-5 rounded shadow-sm">
-            <form action="{{ route('prodi.create') }}" method="POST">
-                @csrf
+            <div class="mb-3">
+                <label for="program" class="form-label">Nomor Induk Prodi</label>
+                <input type="text" class="form-control" id="program" placeholder="Contoh: 2224250012">
+            </div>
 
-                <div class="mb-5">
-                    <label for="name">Nama Program Studi</label>
-                    <input type="text"
-                        class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-full transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                        name="name" value="{{ old('name') }}" required>
-
-                    @error('name')
-                        <div class="bg-red-400 p-2 shadow-sm rounded mt-2">
-                            {{ $message }}
-                        </div>
-                    @enderror
-                </div>
-
-                <div class="mb-5">
-                    <label for="code">Kode Program Studi</label>
-                    <input type="text"
-                        class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-full transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                        name="code" value="{{ old('code') }}" required>
-
-                    @error('code')
-                        <div class="bg-red-400 p-2 shadow-sm rounded mt-2">
-                            {{ $message }}
-                        </div>
-                    @enderror
-                </div>
-
-                <div class="mb-5">
-                    <label for="price">UKT</label>
-                    <input type="text"
-                        class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-full transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                        name="price" value="{{ old('price') }}" required>
-
-                    @error('price')
-                        <div class="bg-red-400 p-2 shadow-sm rounded mt-2">
-                            {{ $message }}
-                        </div>
-                    @enderror
-                </div>
-
-                <div class="mt-3">
-                    <button type="submit"
-                        class="inline-block px-6 py-2.5 bg-blue-600 text-dark font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
-                        Save
-                    </button>
-                    <a href="{{ route('prodi.index') }}"
-                        class="inline-block px-6 py-2.5 bg-gray-200 text-gray-700 font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-gray-300 hover:shadow-lg focus:bg-gray-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-lg transition duration-150 ease-in-out">
-                        back
-                    </a>
-                </div>
-            </form>
-        </div>
+            <button type="submit" class="btn btn-danger">Simpan</button>
+        </form>
     </div>
-
-</body>
-
-</html>
+</main>
 @endsection
+

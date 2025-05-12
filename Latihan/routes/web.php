@@ -47,17 +47,11 @@ Route::get('/dosen', [DosenController::class, 'index'])->name('dosen.index');
 
 
 // Route untuk prodi
-Route::prefix('prodi')->group(function() {
-    Route::get('/', [ProdiController::class, 'index'])->name('prodi.index');
-    Route::get('/create', [ProdiController::class, 'create'])->name('prodi.create');
-
-    // Detail prodi
-    Route::get('/{id}', [ProdiController::class, 'show'])->name('prodi.show');
-
-    // Delete prodi
-    Route::get('/{id}/delete', [ProdiController::class, 'delete'])->name('prodi.delete');
-    Route::delete('/{id}', [ProdiController::class, 'destroy'])->name('prodi.destroy');
-});
+Route::get('/prodi', [ProdiController::class, 'index'])->name('prodi.index');
+Route::get('/prodi/{id}/detail', [ProdiController::class, 'detail'])->name('prodi.detail');
+Route::get('/prodi/create', [ProdiController::class, 'createForm'])->name('prodi.create');
+Route::post('/prodi/store', [ProdiController::class, 'store'])->name('prodi.store');
+Route::post('/prodi/{id}/destroy', [ProdiController::class, 'destroy'])->name('prodi.destroy');  // Menggunakan destroy
 
 //route fakultas
 Route::get('/fakultas', [FakultasController::class, 'index'])->name('fakultas.index');
@@ -65,3 +59,10 @@ Route::get('/fakultas/{id}/detail', [FakultasController::class, 'detail'])->name
 Route::get('/fakultas/create', [FakultasController::class, 'createForm'])->name('fakultas.create');
 Route::post('/fakultas/store', [FakultasController::class, 'store'])->name('fakultas.store');
 Route::post('/fakultas/{id}/destroy', [FakultasController::class, 'destroy'])->name('fakultas.destroy');  // Menggunakan destroy
+
+//route dosen
+Route::get('/dosen', [dosenController::class, 'index'])->name('dosen.index');
+Route::get('/dosen/{id}/detail', [dosenController::class, 'detail'])->name('dosen.detail');
+Route::get('/dosen/create', [dosenController::class, 'createForm'])->name('dosen.create');
+Route::post('/dosen/store', [dosenController::class, 'store'])->name('dosen.store');
+Route::post('/dosen/{id}/destroy', [dosenController::class, 'destroy'])->name('dosen.destroy');  // Menggunakan destroy

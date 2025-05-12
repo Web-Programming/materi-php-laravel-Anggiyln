@@ -8,14 +8,14 @@
         <h1 class="mb-4 mt-3 text-white">Fakultas Universitas Multi Data Palembang</h1>
 
         @foreach($fakultas as $fak)
-        <div class="small-box text-bg-secondary" style="box-shadow: none">
+        <div class="small-box text-bg-light" style="box-shadow: none">
             <div class="inner">
         <div class="row mb-5 fade-in">
             <div class="col-md-6">
                 <img src="{{ asset('img/' . $fak['gambar']) }}" class="img-fluid rounded" alt="{{ $fak['nama'] }}">
             </div>
             <div class="col-md-6 mt-3">
-                <h2 class="text-white"><b>{{ $fak['nama'] }}</b></h2>
+                <h2 class="text-danger"><b>{{ $fak['nama'] }}</b></h2>
                 <p class="text-dark">{{ $fak['deskripsi'] }}</p>
 
                 <!-- Tombol Detail -->

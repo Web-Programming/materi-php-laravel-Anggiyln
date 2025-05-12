@@ -9,17 +9,73 @@ class ProdiController extends Controller
     /**
      * Display a listing of the resource.
      */
+protected $prodi = [
+        [
+            'id' => 1,
+            'nama' => 'Prodi Fakultas Ilmu Komputer & Rekayasa',
+            'gambar' => 'Prodi.jpeg',
+            'deskripsi' => 'Mereka memiliki latar belakang pendidikan magister dan doktor di bidang Informatika, Sistem Informasi, Teknik Elektro, dan bidang terkait lainnya. Selain aktif dalam kegiatan akademik, dosen FIKR juga rutin melakukan riset, publikasi ilmiah, serta terlibat dalam pengembangan sistem teknologi baik di dalam maupun luar kampus.'
+        ],
+        [
+            'id' => 2,
+            'nama' => 'Prodi Fakultas Ekonomi & Bisnis',
+            'gambar' => 'Prodi.jpeg',
+            'deskripsi' => 'Mereka tidak hanya mengajar, tetapi juga aktif memberikan pelatihan, seminar kewirausahaan, serta menjadi konsultan bisnis di berbagai lembaga dan UMKM.'
+        ],
+    ];
 
 
     public function index()
-    {
-        return view('prodi.index');
+{
+    $prodi = [
+        [
+            'id' => 1,
+            'nama' => 'Prodi Fakultas Ilmu Komputer & Rekayasa',
+            'gambar' => 'jurusan.jpg',
+            'deskripsi' => 'memiliki beberapa program studi unggulan, yaitu:
 
-    }
+Informatika: fokus pada algoritma, pemrograman, kecerdasan buatan, dan rekayasa perangkat lunak.
 
-    public function create()
+Sistem Informasi: menggabungkan manajemen dan teknologi untuk membangun sistem informasi bisnis.
+
+Teknik Elektro: mempelajari sistem kelistrikan, robotika, mikrokontroler, dan embedded system.'
+        ],
+        [
+            'id' => 2,
+            'nama' => 'Prodi Fakultas Ekonomi & Bisnis',
+            'gambar' => 'blabla.jpg',  // Menambahkan gambar
+            'deskripsi' => 'FEB UMDP memiliki dua program studi:
+
+Manajemen: fokus pada strategi bisnis, pemasaran, SDM, dan keuangan.
+
+Akuntansi: mendalami akuntansi keuangan, audit, perpajakan, dan sistem informasi akuntansi.
+
+'
+        ]
+    ];
+
+    return view('prodi.index', compact('prodi'));
+}
+
+    /**
+     * Show the form for creating a new resource.
+     */
+
+     public function createForm()
+     {
+         return view('prodi.create');
+     }
+
+    public function create(Request $request)
     {
-         return view ("prodi.create");
+        $newprodi = [
+            'id' => count($this->prodi) + 1,
+            'nama' => $request->input('nama')
+        ];
+
+        array_push($this->prodi, $newprodi);
+
+        return redirect()->route('prodi.index');
     }
 
     /**
@@ -27,38 +83,36 @@ class ProdiController extends Controller
      */
     public function store(Request $request)
     {
-
-
+        //
     }
-
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function detail($id)
     {
-         // Data hardcoded sesuai dengan index
-         $prodiData = [
-            '1401' => ['name' => 'Sistem Informasi', 'ukt' => 'RP.8.000.000'],
-            '1402' => ['name' => 'Informatika', 'ukt' => 'RP.8.000.000'],
-            '1301' => ['name' => 'Manajemen', 'ukt' => 'RP.8.000.000'],
-            '1302' => ['name' => 'Akuntansi', 'ukt' => 'RP.8.000.000'],
-            '1403' => ['name' => 'Teknik Elektro', 'ukt' => 'RP.5.000.000'],
-        ];
+        $prodi = null;
+        foreach ($this->prodi as $prodiItem) {
+            if ($proditem['id'] == $id) {
+                $prodi = $prodiItem;
+                break;
+            }
+        }
 
-        $prodi = [
-            'id' => $id,
-            'name' => $prodiData[$id]['name'] ?? 'Tidak Ditemukan',
-            'ukt' => $prodiData[$id]['ukt'] ?? '-'
-        ];
+        if (!$prodi) {
+            return redirect()->route('prodi.index')->with('error', 'prodi tidak ditemukan');
+        }
 
-        return view('prodi.detail', compact('prodi'));
+        return view('prodi.detail', ['prodi' => $prodi]);
     }
 
-    // Menampilkan form delete
-    public function delete($id)
-    {
 
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        //
     }
 
     /**
@@ -74,8 +128,15 @@ class ProdiController extends Controller
      */
     public function destroy($id)
     {
-         // Ini hanya simulasi, tidak benar-benar menghapus data
-         return redirect()->route('prodi.index')
-         ->with('success', 'Program studi berhasil dihapus (simulasi)');
+        // Cari data berdasarkan ID dan hapus dari array
+        foreach ($this->prodi as $key => $prodi) {
+            if ($prodi['id'] == $id) {
+                unset($this->prodi[$key]);
+                break;
+            }
+        }
+
+        // Redirect ke halaman fakultas dengan pesan sukses
+        return redirect()->route('prodi.index')->with('success', 'Fakultas berhasil dihapus');
     }
 }
