@@ -73,3 +73,10 @@ Route::get('/mahasiswa/{id}/detail', [mahasiswaController::class, 'detail'])->na
 Route::get('/mahasiswa/create', [mahasiswaController::class, 'createForm'])->name('mhs.create');
 Route::post('/mahasiswa/store', [mahasiswaController::class, 'store'])->name('mhs.store');
 Route::post('/mahasiswa/{id}/destroy', [mahasiswaController::class, 'destroy'])->name('mhs.destroy');  // Menggunakan destroy
+
+//route Materi
+Route::get('/materi', [materiController::class, 'index'])->name('materi.index');
+Route::get('/materi/{id}/detail', [materiController::class, 'detail'])->name('Materi.detail');
+Route::get('/materi/create', [materiController::class, 'createForm'])->name('Materi.create');
+Route::post('/materi/store', [materiController::class, 'store'])->name('Materi.store');
+Route::post('/materi/{id}/destroy', [materiController::class, 'destroy'])->name('Materi.destroy');  // Menggunakan destroy

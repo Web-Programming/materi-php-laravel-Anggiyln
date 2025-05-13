@@ -19,8 +19,8 @@
             </div>
 
             <div class="mb-3">
-                <label for="program" class="form-label">Program Studi</label>
-                <input type="text" class="form-control" id="program" placeholder="Contoh: Teknik Informatika (S1)">
+                <label for="program" class="form-label">NPM</label>
+                <input type="text" class="form-control" id="program" placeholder="Contoh: 2428250081">
             </div>
 
             <button type="submit" class="btn btn-danger">Simpan</button>

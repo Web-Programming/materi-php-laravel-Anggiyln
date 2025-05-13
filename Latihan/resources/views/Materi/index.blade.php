@@ -1,6 +1,37 @@
 @extends('layout.master')
-@section('title', 'Halaman Index Materi')
+
+@section('title', 'Universitas MDP')
+
 @section('content')
-    <h1>Daftar Materi</h1>
-    <p>Ini adalah halaman index untuk menampilkan data Materi.</p>
+<main class="app-main" style="background-color: #f73333;">
+    <div class="container">
+        <h1 class="mb-4 mt-3 text-white">Materi Universitas Multi Data Palembang</h1>
+
+        @foreach($materi as $fak)
+        <div class="small-box text-bg-light" style="box-shadow: none">
+            <div class="inner">
+        <div class="row mb-5 fade-in">
+            <div class="col-md-6">
+                <img src="{{ asset('img/' . $fak['gambar']) }}" class="img-fluid rounded" alt="{{ $fak['nama'] }}">
+            </div>
+            <div class="col-md-6 mt-3">
+                <h2 class="text-danger"><b>{{ $fak['nama'] }}</b></h2>
+                <p class="text-dark">{{ $fak['deskripsi'] }}</p>
+
+                <!-- Tombol Detail -->
+                <a href="{{ route('Materi.detail', $fak['id']) }}" class="btn btn-primary">Detail</a>
+
+                <!-- Tombol Hapus -->
+                <form action="{{ route('Materi.destroy', $fak['id']) }}" method="POST" style="display: inline;">
+                    @csrf
+                    @method('POST')
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin ingin menghapus Materi ini?')">Hapus</button>
+                </form>
+            </div>
+        </div>
+        @endforeach
+
+        <a href="{{ route('Materi.create') }}" class="btn btn-success mb-5">Tambah Materi</a>
+    </div>
+</main>
 @endsection
