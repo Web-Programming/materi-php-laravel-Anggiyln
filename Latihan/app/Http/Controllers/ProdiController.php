@@ -13,13 +13,13 @@ protected $prodi = [
         [
             'id' => 1,
             'nama' => 'Prodi Fakultas Ilmu Komputer & Rekayasa',
-            'gambar' => 'Prodi.jpeg',
+            'gambar' => 'jurusan.jpg',
             'deskripsi' => 'Mereka memiliki latar belakang pendidikan magister dan doktor di bidang Informatika, Sistem Informasi, Teknik Elektro, dan bidang terkait lainnya. Selain aktif dalam kegiatan akademik, dosen FIKR juga rutin melakukan riset, publikasi ilmiah, serta terlibat dalam pengembangan sistem teknologi baik di dalam maupun luar kampus.'
         ],
         [
             'id' => 2,
             'nama' => 'Prodi Fakultas Ekonomi & Bisnis',
-            'gambar' => 'Prodi.jpeg',
+            'gambar' => 'jurusan.jpg',
             'deskripsi' => 'Mereka tidak hanya mengajar, tetapi juga aktif memberikan pelatihan, seminar kewirausahaan, serta menjadi konsultan bisnis di berbagai lembaga dan UMKM.'
         ],
     ];
@@ -31,7 +31,7 @@ protected $prodi = [
         [
             'id' => 1,
             'nama' => 'Prodi Fakultas Ilmu Komputer & Rekayasa',
-            'gambar' => 'jurusan.jpg',
+            'gambar' => 'blabla.jpg',
             'deskripsi' => 'memiliki beberapa program studi unggulan, yaitu:
 
 Informatika: fokus pada algoritma, pemrograman, kecerdasan buatan, dan rekayasa perangkat lunak.
@@ -93,7 +93,7 @@ Akuntansi: mendalami akuntansi keuangan, audit, perpajakan, dan sistem informasi
     {
         $prodi = null;
         foreach ($this->prodi as $prodiItem) {
-            if ($proditem['id'] == $id) {
+            if ($prodiItem['id'] == $id) {
                 $prodi = $prodiItem;
                 break;
             }

@@ -34,7 +34,7 @@ Route::resource('dosen', DosenController::class);
 
 Route::get('/fakultas', [FakultasController::class, 'index'])->name('fakultas.index');
 Route::get('/prodi', [ProdiController::class, 'index'])->name('prodi.index');
-Route::get('/mahasiswa', [MahasiswaController::class, 'index'])->name('mahasiswa.index');
+Route::get('/mahasiswa', [MahasiswaController::class, 'index'])->name('mhs.index');
 Route::get('/materi', [MateriController::class, 'index'])->name('materi.index');
 Route::get('/prodi', [ProdiController::class, 'index'])->name('prodi.index');
 Route::get('/dosen', [DosenController::class, 'index'])->name('dosen.index');
@@ -66,3 +66,10 @@ Route::get('/dosen/{id}/detail', [dosenController::class, 'detail'])->name('dose
 Route::get('/dosen/create', [dosenController::class, 'createForm'])->name('dosen.create');
 Route::post('/dosen/store', [dosenController::class, 'store'])->name('dosen.store');
 Route::post('/dosen/{id}/destroy', [dosenController::class, 'destroy'])->name('dosen.destroy');  // Menggunakan destroy
+
+//route Mahasiswa
+Route::get('/mahasiswa', [mahasiswaController::class, 'index'])->name('mahasiswa.index');
+Route::get('/mahasiswa/{id}/detail', [mahasiswaController::class, 'detail'])->name('mhs.detail');
+Route::get('/mahasiswa/create', [mahasiswaController::class, 'createForm'])->name('mhs.create');
+Route::post('/mahasiswa/store', [mahasiswaController::class, 'store'])->name('mhs.store');
+Route::post('/mahasiswa/{id}/destroy', [mahasiswaController::class, 'destroy'])->name('mhs.destroy');  // Menggunakan destroy
