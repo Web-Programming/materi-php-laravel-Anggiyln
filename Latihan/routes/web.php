@@ -1,12 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MhsApiController;
 use App\Http\Controllers\MateriController;
 use App\Http\Controllers\ProdiController;
 use App\Http\Controllers\FakultasController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\DosenController;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -80,3 +82,17 @@ Route::get('/materi/{id}/detail', [materiController::class, 'detail'])->name('Ma
 Route::get('/materi/create', [materiController::class, 'createForm'])->name('Materi.create');
 Route::post('/materi/store', [materiController::class, 'store'])->name('Materi.store');
 Route::post('/materi/{id}/destroy', [materiController::class, 'destroy'])->name('Materi.destroy');  // Menggunakan destroy
+
+Route::get('/test', function() {
+    return "Ini test route!";
+});
+
+// Authentication
+Route::get('/login', [AuthController::class, 'showLogin']);
+Route::post('/login', [AuthController::class, 'do_login']);
+
+Route::get('/register', [AuthController::class, 'showRegister']);
+Route::post('/register', [AuthController::class, 'do_register']);
+Route::get('/', function () {
+    return view('home');
+})->name('layout.home');

@@ -156,6 +156,27 @@
           <!--end::End Navbar Links-->
         </div>
         <!--end::Container-->
+
+        <script>
+     // Menambahkan event listener untuk scroll perlambat pada klik navbar
+     const scrollLinks = document.querySelectorAll('nav ul li a');
+
+scrollLinks.forEach(link => {
+  link.addEventListener('click', function(e) {
+    e.preventDefault(); // Mencegah default klik yang langsung menuju lokasi
+
+    const targetId = this.getAttribute('href').substring(1); // Mendapatkan ID tujuan
+    const targetElement = document.getElementById(targetId); // Mencari elemen tujuan
+
+    // Menggunakan window.scrollTo dengan opsi behavior smooth
+    window.scrollTo({
+      top: targetElement.offsetTop, // Posisi elemen tujuan
+      behavior: 'smooth' // Scroll yang halus
+    });
+  });
+});
+  </script>
+
       </nav>
       <!--end::Header-->
       <!--begin::Sidebar-->
