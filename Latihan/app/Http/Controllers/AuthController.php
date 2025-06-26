@@ -24,9 +24,21 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        if (auth()->attempt($credentials)) {
+        if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('/');
+
+            // Redirect berdasarkan level user
+            $user = Auth::user();
+            switch ($user->level) {
+                case 'admin':
+                    return redirect()->intended('/admin/dashboard');
+                case 'dosen':
+                    return redirect()->intended('/dosen/dashboard');
+                case 'mahasiswa':
+                    return redirect()->intended('/mahasiswa/dashboard');
+                default:
+                    return redirect()->intended('/dashboard');
+            }
         }
 
         return back()->withErrors([
@@ -34,19 +46,20 @@ class AuthController extends Controller
         ])->withInput();
     }
 
-    // Tampilkan form register
+    // Tampilkan form register dengan pilihan level
     public function showRegister()
     {
         return view('auth.register');
     }
 
-    // Proses register
+    // Proses register dengan penambahan level
     public function do_register(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
+            'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:8',
+            'password' => 'required|min:8|confirmed',
+            'level' => 'required|in:user,mahasiswa,dosen',
         ]);
 
         if ($validator->fails()) {
@@ -55,20 +68,19 @@ class AuthController extends Controller
                 ->withInput();
         }
 
-        $user = new User();
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = Hash::make($request->password);
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'level' => $request->level,
+        ]);
 
-        // Pastikan kolom level ada di migration, atau hapus baris ini
-        $user->level = 'user';
+        Auth::login($user);
 
-        $user->save();
-
-        return redirect('login')->with('success', 'Registrasi berhasil, silakan login.');
+        return redirect()->route('dashboard')->with('success', 'Registrasi berhasil!');
     }
 
-    // Proses logout (tambahkan jika diperlukan)
+    // Proses logout
     public function logout(Request $request)
     {
         Auth::logout();
@@ -76,5 +88,26 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/login')->with('success', 'Berhasil logout.');
+    }
+
+    // Tampilkan dashboard berdasarkan level
+    public function dashboard()
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return redirect('/login');
+        }
+
+        switch ($user->level) {
+            case 'admin':
+                return view('dashboard.admin');
+            case 'dosen':
+                return view('dashboard.dosen');
+            case 'mahasiswa':
+                return view('dashboard.mahasiswa');
+            default:
+                return view('dashboard.user');
+        }
     }
 }

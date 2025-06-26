@@ -3,67 +3,54 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MahasiswaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-  protected $mahasiswa = [
+    // Data dummy mahasiswa
+    protected $mahasiswa = [
         [
             'id' => 1,
             'nama' => 'Mahasiswa Fakultas Ilmu Komputer & Rekayasa',
             'gambar' => 'mahasiswa4.jpeg',
-            'deskripsi' => 'Mereka memiliki latar belakang pendidikan magister dan doktor di bidang Informatika, Sistem Informasi, Teknik Elektro, dan bidang terkait lainnya. Selain aktif dalam kegiatan akademik, dosen FIKR juga rutin melakukan riset, publikasi ilmiah, serta terlibat dalam pengembangan sistem teknologi baik di dalam maupun luar kampus.'
+            'deskripsi' => 'Mahasiswa aktif di bidang Informatika, Sistem Informasi, dan Teknik Elektro.'
         ],
         [
             'id' => 2,
             'nama' => 'Mahasiswa Fakultas Ekonomi & Bisnis',
             'gambar' => 'mahasiswa5.jpg',
-            'deskripsi' => 'Mereka tidak hanya mengajar, tetapi juga aktif memberikan pelatihan, seminar kewirausahaan, serta menjadi konsultan bisnis di berbagai lembaga dan UMKM.'
+            'deskripsi' => 'Mahasiswa aktif di bidang Manajemen, Akuntansi, dan Bisnis Digital.'
         ],
     ];
 
+    public function __construct()
+    {
+        // Middleware untuk memeriksa hak akses
+        $this->middleware('auth');
+        $this->middleware('checklevel:admin,dosen')->except(['index', 'show']);
+    }
 
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
-{
-    $mahasiswa = [
-        [
-            'id' => 1,
-            'nama' => 'Mahasiswa Fakultas Ilmu Komputer & Rekayasa',
-            'gambar' => 'mahasiswa2.jpg',
-            'deskripsi' => 'Mahasiswa Fakultas Ilmu Komputer & Rekayasa di Universitas Multi Data Palembang merupakan tenaga pengajar yang berkompeten di bidang teknologi informasi, rekayasa, dan komputer.'
-        ],
-        [
-            'id' => 2,
-            'nama' => 'Mahasiswa Fakultas Ekonomi & Bisnis',
-            'gambar' => 'mahasiswa3.jpg',  // Menambahkan gambar
-            'deskripsi' => 'Mahasiswa Fakultas Ekonomi & Bisnis di Universitas Multi Data Palembang adalah akademisi dan praktisi ekonomi serta bisnis yang memiliki pengalaman dalam bidang manajemen, akuntansi, perpajakan, hingga bisnis digital.'
-        ]
-    ];
+    {
+        // Cek level user
+        $user = Auth::user();
 
-    return view('mhs.index', compact('mahasiswa'));
-}
+        if ($user->level === 'mahasiswa') {
+            return view('mahasiswa.access_denied');
+        }
+
+        return view('mahasiswa.index', ['mahasiswa' => $this->mahasiswa]);
+    }
 
     /**
      * Show the form for creating a new resource.
      */
-
-     public function createForm()
-     {
-         return view('mhs.create');
-     }
-
-    public function create(Request $request)
+    public function create()
     {
-        $newmahasiswa = [
-            'id' => count($this->mahasiswa) + 1,
-            'nama' => $request->input('nama')
-        ];
-
-        array_push($this->mahasiswa, $newmahasiswa);
-
-        return redirect()->route('mhs.index');
+        return view('mahasiswa.create');
     }
 
     /**
@@ -71,44 +58,73 @@ class MahasiswaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $newMahasiswa = [
+            'id' => count($this->mahasiswa) + 1,
+            'nama' => $request->input('nama'),
+            'gambar' => $request->input('gambar') ?? 'default.jpg',
+            'deskripsi' => $request->input('deskripsi')
+        ];
+
+        array_push($this->mahasiswa, $newMahasiswa);
+
+        return redirect()->route('mahasiswa.index')->with('success', 'Data mahasiswa berhasil ditambahkan');
     }
 
     /**
      * Display the specified resource.
      */
-    public function detail($id)
+    public function show($id)
     {
         $mahasiswa = null;
-        foreach ($this->mahasiswa as $mahasiswaItem) {
-            if ($mahasiswaItem['id'] == $id) {
-                $mahasiswa = $mahasiswaItem;
+        foreach ($this->mahasiswa as $mhs) {
+            if ($mhs['id'] == $id) {
+                $mahasiswa = $mhs;
                 break;
             }
         }
 
         if (!$mahasiswa) {
-            return redirect()->route('mhs.index')->with('error', 'Mahasiswa tidak ditemukan');
+            return redirect()->route('mahasiswa.index')->with('error', 'Mahasiswa tidak ditemukan');
         }
 
-        return view('mhs.detail', ['mahasiswa' => $mahasiswa]);
+        return view('mahasiswa.show', compact('mahasiswa'));
     }
-
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $mahasiswa = null;
+        foreach ($this->mahasiswa as $mhs) {
+            if ($mhs['id'] == $id) {
+                $mahasiswa = $mhs;
+                break;
+            }
+        }
+
+        if (!$mahasiswa) {
+            return redirect()->route('mahasiswa.index')->with('error', 'Mahasiswa tidak ditemukan');
+        }
+
+        return view('mahasiswa.edit', compact('mahasiswa'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        foreach ($this->mahasiswa as &$mhs) {
+            if ($mhs['id'] == $id) {
+                $mhs['nama'] = $request->input('nama');
+                $mhs['gambar'] = $request->input('gambar') ?? $mhs['gambar'];
+                $mhs['deskripsi'] = $request->input('deskripsi');
+                break;
+            }
+        }
+
+        return redirect()->route('mahasiswa.index')->with('success', 'Data mahasiswa berhasil diperbarui');
     }
 
     /**
@@ -116,15 +132,13 @@ class MahasiswaController extends Controller
      */
     public function destroy($id)
     {
-        // Cari data berdasarkan ID dan hapus dari array
-        foreach ($this->mahasiswa as $key => $mahasiswa) {
-            if ($mahasiswa['id'] == $id) {
+        foreach ($this->mahasiswa as $key => $mhs) {
+            if ($mhs['id'] == $id) {
                 unset($this->mahasiswa[$key]);
                 break;
             }
         }
 
-        // Redirect ke halaman fakultas dengan pesan sukses
-        return redirect()->route('mhs.index')->with('success', 'Mahasiswa berhasil dihapus');
+        return redirect()->route('mahasiswa.index')->with('success', 'Data mahasiswa berhasil dihapus');
     }
 }

@@ -87,12 +87,47 @@ Route::get('/test', function() {
     return "Ini test route!";
 });
 
-// Authentication
-Route::get('/login', [AuthController::class, 'showLogin']);
-Route::post('/login', [AuthController::class, 'do_login']);
+// // Authentication
+// Route::get('/login', [AuthController::class, 'showLogin']);
+// Route::post('/login', [AuthController::class, 'do_login']);
 
-Route::get('/register', [AuthController::class, 'showRegister']);
+// Route::get('/register', [AuthController::class, 'showRegister']);
+// Route::post('/register', [AuthController::class, 'do_register']);
+// Route::get('/', function () {
+//     return view('home');
+// })->name('layout.home');
+// routes/web.php
+
+Route::middleware(['auth'])->group(function () {
+    // Dashboard umum
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+
+    // Admin routes
+    Route::middleware(['checklevel:admin'])->group(function () {
+        Route::resource('users', UserController::class);
+        Route::resource('mahasiswa', MahasiswaController::class);
+        Route::resource('dosen', DosenController::class);
+        Route::resource('materi', MateriController::class);
+    });
+
+    // Dosen routes
+    Route::middleware(['checklevel:dosen'])->group(function () {
+        Route::resource('materi', MateriController::class)->except(['destroy']);
+        Route::resource('mahasiswa', MahasiswaController::class)->only(['index', 'show']);
+    });
+
+    // Mahasiswa routes
+    Route::middleware(['checklevel:mahasiswa'])->group(function () {
+        Route::resource('materi', MateriController::class)->only(['index', 'show']);
+    });
+
+    // User routes (only dashboard)
+    Route::middleware(['checklevel:user'])->group(function () {
+        // Hanya dashboard yang bisa diakses
+    });
+});
+
+Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'do_register']);
-Route::get('/', function () {
-    return view('home');
-})->name('layout.home');

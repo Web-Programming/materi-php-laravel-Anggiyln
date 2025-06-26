@@ -23,19 +23,29 @@
                     </div>
                 @endif
 
-                <form method="POST" action="/register" novalidate>
+                @if(session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                <form method="POST" action="{{ route('register') }}" novalidate>
                     @csrf
                     <div class="mb-3">
-                        <label for="name" class="form-label">Nama</label>
+                        <label for="name" class="form-label">Nama Lengkap</label>
                         <input
                             type="text"
                             id="name"
                             name="name"
-                            class="form-control"
+                            class="form-control @error('name') is-invalid @enderror"
                             placeholder="Masukkan nama lengkap"
                             value="{{ old('name') }}"
                             required
+                            autofocus
                         />
+                        @error('name')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <div class="mb-3">
@@ -44,32 +54,71 @@
                             type="email"
                             id="email"
                             name="email"
-                            class="form-control"
+                            class="form-control @error('email') is-invalid @enderror"
                             placeholder="Masukkan email"
                             value="{{ old('email') }}"
                             required
                         />
+                        @error('email')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
 
-                    <div class="mb-4">
+                    <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
                         <input
                             type="password"
                             id="password"
                             name="password"
+                            class="form-control @error('password') is-invalid @enderror"
+                            placeholder="Masukkan password (minimal 8 karakter)"
+                            required
+                        />
+                        @error('password')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="password_confirmation" class="form-label">Konfirmasi Password</label>
+                        <input
+                            type="password"
+                            id="password_confirmation"
+                            name="password_confirmation"
                             class="form-control"
-                            placeholder="Masukkan password"
+                            placeholder="Masukkan ulang password"
                             required
                         />
                     </div>
 
-                    <button type="submit" class="btn btn-primary w-100">Register</button>
+                    <div class="mb-4">
+                        <label for="level" class="form-label">Level Pengguna</label>
+                        <select
+                            id="level"
+                            name="level"
+                            class="form-select @error('level') is-invalid @enderror"
+                            required
+                        >
+                            <option value="" disabled selected>Pilih level pengguna</option>
+                            <option value="user" {{ old('level') == 'user' ? 'selected' : '' }}>User</option>
+                            <option value="mahasiswa" {{ old('level') == 'mahasiswa' ? 'selected' : '' }}>Mahasiswa</option>
+                            <option value="dosen" {{ old('level') == 'dosen' ? 'selected' : '' }}>Dosen</option>
+                        </select>
+                        @error('level')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 py-2">
+                        Daftar Sekarang
+                    </button>
                 </form>
 
-                <p class="mt-3 text-center">
-                    Sudah punya akun?
-                    <a href="/login" class="text-decoration-none">Login di sini</a>
-                </p>
+                <div class="mt-3 text-center">
+                    <p class="mb-0">Sudah punya akun?
+                        <a href="{{ route('login') }}" class="text-decoration-none">Login disini</a>
+                    </p>
+                </div>
             </div>
         </div>
     </div>
